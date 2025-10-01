@@ -5,14 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TAOranslater - Yapay Zeka Dedektörü</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body>
+<body data-theme="light">
 
     <div class="container">
+        
+        <button id="themeToggle" onclick="toggleTheme()">
+            <i class="fas fa-moon"></i> 
+        </button>
+        
         <div id="loadingOverlay" class="overlay hidden">
             <div class="loader"></div>
             <p class="overlay-text">Yeni Model Yükleniyor... Ciddi Geçiş Sağlanıyor.</p>
         </div>
+
         <h1>TAOranslater</h1>
         <p class="subtitle">Metin Analizi ve Yapay Zeka Teyit Aracı</p>
 
@@ -23,8 +30,9 @@
 
         <div class="selection-area">
             <label for="modelSelector">Analiz Modeli:</label>
-            <select id="modelSelector" onchange="modelGecisiBaslat()"> <option value="TAOTrans_1_0">TAOTrans 1.0 (Alpha)</option>
-                <option value="TAOTrans_1_1">TAOTrans 1.1 (2. Aktif Sürüm - En İyi)</option>
+            <select id="modelSelector" onchange="modelGecisiBaslat()">
+                <option value="TAOTrans_1_0">TAOTrans 1.0 (Alpha)</option>
+                <option value="TAOTrans_1_1" selected>TAOTrans 1.1 Turbo</option>
                 <option value="TAOTrans_1_5" disabled>TAOTrans 1.5 (Geliştirme Aşamasında)</option>
             </select>
         </div>
@@ -53,7 +61,7 @@
         </div>
 
         <div class="not">
-            <p>ℹ️ Bu dedektör, seçilen TAOTrans sürümünün mantık kuralları ile çalışır.</p>
+            <p>ℹ️ **Çoklu Kullanıcı Notu:** Bu uygulama tarayıcınızda çalışır (Client-Side). Girdiğiniz metinler sunucuya gönderilmediği için, **cevaplar başka kullanıcılarla karışmaz**.</p>
         </div>
     </div>
 
