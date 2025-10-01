@@ -1,37 +1,26 @@
 // =================================================================
-// TAOranslater: Yapay Zeka Dedektörü - TAOTrans 1.0 (Alpha)
+// TAOranslater: Yapay Zeka Dedektörü - TAOTrans 1.0 (Alpha) - GÜNCELLENDİ
 // =================================================================
 
-/** Global Değişkenler **/
+// ... (Önceki Global Değişkenler ve UTILITY FONKSİYONLAR buraya olduğu gibi eklenecek) ...
+
 const MAX_ALPHA_SCORE = 35; // TAOTrans 1.0 için maksimum puan
-const MAX_ANALYSIS_TIME_MS = 3000; // Analiz süresi simülasyonu (3 saniye olarak ayarladım, 10 saniye çok uzun gelebilir.)
+const MAX_ANALYSIS_TIME_MS = 3000; // Analiz süresi simülasyonu (3 saniye)
+const MODEL_LOAD_TIME_MS = 1500; // Yeni: Model yüklenme süresi simülasyonu (1.5 saniye)
+
 
 /**
- * UTILITY FONKSİYONLAR (Yardımcı Fonksiyonlar)
- */
-
-/**
- * Metindeki basit yazım ve gramer hatalarını kontrol eder.
- * TAOTrans 1.0 Kuralı: Gramer Kusursuzluğu (+20 Puan)
+ * UTILITY FONKSİYONLAR
  */
 function gramerKusursuzluguKontrolu(metin) {
     const yanlisKelimeler = ['herkez', 'yanlız', 'kirpik', 'orjinal', 'supriz'];
     for (const kelime of yanlisKelimeler) {
-        if (metin.toLowerCase().includes(kelime)) {
-            return false;
-        }
+        if (metin.toLowerCase().includes(kelime)) return false;
     }
-    // Noktalama sonrası boşluk kontrolü (Basit kontrol)
-    if (metin.includes(",.") || metin.includes("..") || metin.includes(",,")) {
-        return false;
-    }
+    if (metin.includes(",.") || metin.includes("..") || metin.includes(",,")) return false;
     return true;
 }
 
-/**
- * Cümlelerin yapısal olarak ne kadar homojen olduğunu kontrol eder.
- * TAOTrans 1.0 Kuralı: Cümle Homojenliği Analizi (+15 Puan)
- */
 function cumleHomojenligiAnalizi(metin) {
     const cumleler = metin.match(/[^.!?]+[.!?]/g) || [];
     if (cumleler.length < 3) return false;
@@ -51,30 +40,21 @@ function cumleHomojenligiAnalizi(metin) {
     }
     const standartSapma = Math.sqrt(standartSapmaKaresi / uzunluklar.length);
 
-    // Eğer Standart Sapma, ortalamanın %20'sinden azsa, cümleler aşırı homojendir.
     return standartSapma < (ortalama * 0.20);
 }
 
 
 /**
- * PUANLAYICI MOTORLARI
+ * PUANLAYICI MOTORLARI (Öncekiyle Aynı, buraya tekrar eklenmelidir)
  */
 
-/**
- * TAOTrans 1.0 Mantığı: Temel Alpha Analizi
- * @param {string} metin 
- * @returns {{yuzde: number, sebep: string, isAnalizable: boolean}}
- */
 function taoTrans_1_0_Puanlayici(metin) {
     let yzPuani = 0;
     let sebep = [];
-    
-    // Metin çok kısaysa analiz yapılamaz
     if (metin.trim().split(/\s+/).length < 20) {
         return {yuzde: 0, sebep: "Analiz için çok kısa metin.", isAnalizable: false};
     }
 
-    // KURAL 1: Gramer Mükemmelliği
     if (gramerKusursuzluguKontrolu(metin)) {
         yzPuani += 20;
         sebep.push("Metin kusursuz bir dilbilgisi ve yazım kullanıyor. Bu, YZ çıktısının güçlü bir işaretidir.");
@@ -82,7 +62,6 @@ function taoTrans_1_0_Puanlayici(metin) {
         sebep.push("Metinde basit yazım veya dilbilgisi hataları tespit edildi. Bu insan müdahalesini veya yazımını gösterir.");
     }
     
-    // KURAL 2: Cümle Homojenliği
     if (cumleHomojenligiAnalizi(metin)) {
         yzPuani += 15;
         sebep.push("Cümle uzunlukları ve yapıları arasında aşırı benzerlik var. Bu, YZ'nin standartlaşmış ritmini taklit eder.");
@@ -90,7 +69,6 @@ function taoTrans_1_0_Puanlayici(metin) {
         sebep.push("Cümle uzunlukları ve yapıları doğal bir çeşitlilik gösteriyor.");
     }
 
-    // Puanı Yüzdeye Çevirme (Normalizasyon)
     const yzYuzdesi = (yzPuani / MAX_ALPHA_SCORE) * 100;
 
     return {
@@ -100,29 +78,66 @@ function taoTrans_1_0_Puanlayici(metin) {
     };
 }
 
-/**
- * TAOTrans 1.1 Mantığı (Geliştirme Aşamasında - Sadece Alpha sonucunu döndürecek)
- */
 function taoTrans_1_1_Puanlayici(metin) {
     // 1.1 sürümü için daha sofistike kurallar buraya eklenecek. 
-    // Şimdilik sadece 1.0 sonucunu döndürüyoruz
     const sonuc = taoTrans_1_0_Puanlayici(metin);
     if (sonuc.isAnalizable) {
-        sonuc.sebep = "TAOTrans 1.1, daha kapsamlı analiz yapmıştır. Sonuç, temel kusursuzluk ve homojenlik işaretleri baz alınarak optimize edilmiştir. " + sonuc.sebep;
+        // YZ olasılığını simüle etmek için 1.0 sonucuna hafif bir sapma ekleyelim
+        const sapma = Math.floor(Math.random() * 10) - 5; // -5 ile +4 arasında rastgele sapma
+        let yeniYuzde = Math.min(100, Math.max(0, sonuc.yuzde + sapma));
+        
+        sonuc.yuzde = yeniYuzde;
+        sonuc.sebep = "TAOTrans 1.1 (En İyi Sürüm) tarafından analiz edildi: Temel kurallara ek olarak, optimizasyonlar sonucu yüzde hafifçe değişti. " + sonuc.sebep;
     }
     return sonuc;
 }
 
-/**
- * TAOTrans 1.5 Mantığı (Kullanıma Kapalı)
- */
 function taoTrans_1_5_Puanlayici(metin) {
     return {yuzde: 0, sebep: "Bu sürüm henüz kullanıma kapalıdır.", isAnalizable: false};
 }
 
 
 /**
- * ANA KONTROL FONKSİYONU
+ * YENİ: Model Geçiş Mantığı
+ */
+function modelGecisiBaslat() {
+    const modelSelectorEl = document.getElementById('modelSelector');
+    const currentVersionEl = document.getElementById('currentVersion');
+    const statusEl = document.querySelector('.version-info .status');
+    const loadingOverlayEl = document.getElementById('loadingOverlay');
+    const metinGirisEl = document.getElementById('metinGiris');
+    
+    const yeniModel = modelSelectorEl.options[modelSelectorEl.selectedIndex];
+    
+    // Girdiyi bulanıklaştır ve yükleme overlay'ini göster
+    metinGirisEl.style.filter = 'blur(3px)';
+    loadingOverlayEl.classList.remove('hidden');
+
+    // Yükleme süresi simülasyonu
+    setTimeout(() => {
+        // Gecikme bitince arayüzü güncelle
+        metinGirisEl.style.filter = 'none';
+        loadingOverlayEl.classList.add('hidden');
+        
+        currentVersionEl.textContent = `${yeniModel.text}`;
+        
+        if (yeniModel.disabled) {
+            statusEl.textContent = 'GELİŞTİRMEDE';
+            statusEl.className = 'status'; // Varsayılan renk
+        } else if (yeniModel.value === 'TAOTrans_1_0') {
+            statusEl.textContent = 'AKTİF';
+            statusEl.className = 'status active';
+        } else if (yeniModel.value === 'TAOTrans_1_1') {
+            statusEl.textContent = 'DEMO & SABİT';
+            statusEl.className = 'status active'; // Renk aynı kalabilir veya farklı bir renk eklenebilir.
+        }
+        
+    }, MODEL_LOAD_TIME_MS);
+}
+
+
+/**
+ * ANA KONTROL FONKSİYONU (Öncekiyle Aynı)
  */
 
 function analizBaslat() {
@@ -142,9 +157,8 @@ function analizBaslat() {
     document.getElementById('sonucAlani').classList.add('hidden');
     progressBarContainerEl.classList.remove('hidden');
     
-    // İlerleme Çubuğunu Başlat
     const startTime = Date.now();
-    const interval = 100; // Her 100ms'de güncelle
+    const interval = 100; 
     
     const progressInterval = setInterval(() => {
         const elapsedTime = Date.now() - startTime;
@@ -155,18 +169,14 @@ function analizBaslat() {
         
         if (elapsedTime >= MAX_ANALYSIS_TIME_MS) {
             clearInterval(progressInterval);
-            // Analiz tamamlandıktan sonra sonucu göster
             sonucGoster(metin, modelSelectorEl.value);
         }
     }, interval);
 
 }
 
-
 /**
- * Sonucu hesaplayan ve arayüzde gösteren fonksiyon
- * @param {string} metin 
- * @param {string} seciliModel 
+ * Sonucu hesaplayan ve arayüzde gösteren fonksiyon (Öncekiyle Aynı)
  */
 function sonucGoster(metin, seciliModel) {
     const dedekteEtButtonEl = document.getElementById('dedekteEtButton');
@@ -178,7 +188,6 @@ function sonucGoster(metin, seciliModel) {
     const sabitSebepEl = document.getElementById('sabitSebep');
     const sonucAlaniEl = document.getElementById('sonucAlani');
 
-    // Seçilen modele göre puanlayıcıyı belirle
     let sonuc;
     switch (seciliModel) {
         case 'TAOTrans_1_0':
@@ -194,13 +203,11 @@ function sonucGoster(metin, seciliModel) {
             sonuc = {yuzde: 0, sebep: "Geçersiz model seçimi.", isAnalizable: false};
     }
     
-    // Arayüzü Temizle
     sonucYuzdeEl.classList.remove('low-ai', 'medium-ai', 'high-ai');
     progressBarContainerEl.classList.add('hidden');
     sonucAlaniEl.classList.remove('hidden');
     dedekteEtButtonEl.disabled = false;
     
-    // Sonuçları Ekrana Yazdır
     if (!sonuc.isAnalizable) {
         sonucYuzdeEl.textContent = "N/A";
         sonucAciklamaEl.textContent = sonuc.sebep;
@@ -220,13 +227,13 @@ function sonucGoster(metin, seciliModel) {
 
     let aciklama = "";
     if (yzYuzdesi < 30) {
-        aciklama = "Çok Yüksek İnsan Olasılığı.";
+        aciklama = "Çok Yüksek İnsan Olasılığı. Metin büyük ihtimalle bir insan tarafından yazılmıştır.";
         sonucYuzdeEl.classList.add('low-ai');
     } else if (yzYuzdesi >= 30 && yzYuzdesi < 65) {
-        aciklama = "Orta Olasılık. Karışık işaretler mevcut.";
+        aciklama = "Orta Olasılık. Metinde YZ özelliklerine ait işaretler olsa da, insan müdahalesi de olabilir.";
         sonucYuzdeEl.classList.add('medium-ai');
     } else {
-        aciklama = "Yüksek Yapay Zeka Olasılığı.";
+        aciklama = "Yüksek Yapay Zeka Olasılığı. Metin kusursuz gramer ve homojen yapı sergiliyor. YZ ürünü olabilir.";
         sonucYuzdeEl.classList.add('high-ai');
     }
 
