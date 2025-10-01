@@ -4,9 +4,12 @@
     --container-bg: #ffffff;
     --text-color: #333;
     --border-color: #e0e0e0;
-    --primary-color: #007bff;
-    --ai-high: #dc3545;
-    --human-high: #28a745;
+    --primary-color: #007bff; /* Mavi */
+    --primary-hover: #0056b3;
+    --ai-high: #dc3545; /* Kırmızı */
+    --human-high: #28a745; /* Yeşil */
+    --active-status-bg: #d4edda;
+    --active-status-color: #155724;
 }
 
 [data-theme='dark'] {
@@ -15,9 +18,12 @@
     --container-bg: #2c2c2c;
     --text-color: #e0e0e0;
     --border-color: #444;
-    --primary-color: #66b3ff;
-    --ai-high: #ff6b6b;
-    --human-high: #6bff6b;
+    --primary-color: #66b3ff; /* Daha açık mavi */
+    --primary-hover: #4a90d4;
+    --ai-high: #ff6b6b; /* Açık Kırmızı */
+    --human-high: #6bff6b; /* Açık Yeşil */
+    --active-status-bg: #444;
+    --active-status-color: #6bff6b;
 }
 
 body {
@@ -90,8 +96,8 @@ h1 {
 }
 
 .active {
-    background-color: #d4edda;
-    color: #155724;
+    background-color: var(--active-status-bg); 
+    color: var(--active-status-color); 
 }
 
 /* Seçim Alanı Stilleri */
@@ -159,7 +165,7 @@ h1 {
     margin-bottom: 25px;
 }
 #dedekteEtButton:hover {
-    background-color: #0056b3;
+    background-color: var(--primary-hover);
 }
 
 /* İlerleme Çubuğu Stilleri */
@@ -288,7 +294,5 @@ h1 {
 }
 
 .overlay-text {
-    font-size: 1.2em;
-    font-weight: 600;
     color: var(--primary-color);
 }
