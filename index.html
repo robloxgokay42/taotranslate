@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAOranslater - Yapay Zeka Dedektörü</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>TAOranslater</h1>
+        <p class="subtitle">Metin Analizi ve Yapay Zeka Teyit Aracı</p>
+
+        <div class="version-info">
+            <span id="currentVersion">TAOTrans 1.0 (Alpha Sürüm)</span>
+            <span class="status active">AKTİF</span>
+        </div>
+
+        <textarea id="metinGiris" 
+                  placeholder="Analiz etmek istediğiniz metni buraya yapıştırın..." 
+                  rows="10"></textarea>
+
+        <button id="dedekteEtButton" onclick="analizBaslat()">DEDEKTE ET</button>
+
+        <div id="sonucAlani" class="sonuc-kutusu">
+            <h2>Analiz Sonucu</h2>
+            <div id="sonucYuzde" class="yuzde">--%</div>
+            <p id="sonucAciklama" class="aciklama">Dedektör çalışmaya hazır. Lütfen bir metin girin.</p>
+        </div>
+
+        <div class="not">
+            <p>ℹ️ Bu dedektör, GPT ve Gemini modellerinin çıktı özelliklerini taklit eden JavaScript mantık kuralları kullanır.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
