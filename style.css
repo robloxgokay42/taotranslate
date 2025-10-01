@@ -1,0 +1,118 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    margin: 0;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+}
+
+h1 {
+    color: #007bff; /* Mavi Ton */
+    margin-bottom: 5px;
+    font-size: 2.5em;
+}
+
+.subtitle {
+    margin-bottom: 25px;
+    color: #666;
+    font-style: italic;
+}
+
+.version-info {
+    margin-bottom: 20px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.status {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+#metinGiris {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+#dedekteEtButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+#dedekteEtButton:hover {
+    background-color: #0056b3;
+}
+
+.sonuc-kutusu {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+.sonuc-kutusu h2 {
+    margin-top: 0;
+    color: #007bff;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+#sonucYuzde {
+    font-size: 3em;
+    font-weight: 700;
+    color: #dc3545; /* Varsayılan Kırmızı (YZ Yüksek) */
+    text-align: center;
+    margin: 15px 0;
+}
+
+.aciklama {
+    font-size: 1.1em;
+    line-height: 1.5;
+    color: #444;
+}
+
+.not {
+    margin-top: 20px;
+    font-size: 0.85em;
+    color: #888;
+}
+
+/* Sonuç Renkleri */
+.low-ai { color: #28a745 !important; } /* Yeşil */
+.medium-ai { color: #ffc107 !important; } /* Sarı */
+.high-ai { color: #dc3545 !important; } /* Kırmızı */
