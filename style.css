@@ -3,6 +3,7 @@
     --bg-color: #f8f8f8; 
     --container-bg: #ffffff;
     --text-color: #333;
+    --detail-text-color: #666; /* Alt başlık ve notlar için */
     --border-color: #e0e0e0;
     --primary-color: #007bff; /* Mavi */
     --primary-hover: #0056b3;
@@ -16,12 +17,13 @@
     /* Karanlık Tema */
     --bg-color: #1a1a1a;
     --container-bg: #2c2c2c;
-    --text-color: #e0e0e0;
+    --text-color: #e0e0e0; /* TÜM YAZILAR BURADAN BEYAZLAŞACAK */
+    --detail-text-color: #aaa; /* Alt başlık ve notlar için */
     --border-color: #444;
-    --primary-color: #66b3ff; /* Daha açık mavi */
+    --primary-color: #66b3ff; 
     --primary-hover: #4a90d4;
-    --ai-high: #ff6b6b; /* Açık Kırmızı */
-    --human-high: #6bff6b; /* Açık Yeşil */
+    --ai-high: #ff6b6b; 
+    --human-high: #6bff6b; 
     --active-status-bg: #444;
     --active-status-color: #6bff6b;
 }
@@ -29,7 +31,7 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--bg-color);
-    color: var(--text-color);
+    color: var(--text-color); /* Genel Metin Rengi */
     display: flex;
     justify-content: center;
     padding: 20px;
@@ -78,14 +80,14 @@ h1 {
 
 .subtitle {
     margin-bottom: 25px;
-    color: #666;
+    color: var(--detail-text-color); /* Dark modda beyaz olacak */
     font-style: italic;
 }
 
 .version-info {
     margin-bottom: 20px;
     font-size: 0.9em;
-    color: #555;
+    color: var(--detail-text-color);
 }
 
 .status {
@@ -194,7 +196,7 @@ h1 {
 }
 
 #progressText {
-    color: var(--text-color);
+    color: var(--text-color); /* Karanlık modda bu yazı beyaz olacak */
     font-weight: 600;
     z-index: 10;
 }
@@ -251,7 +253,7 @@ h1 {
 .not {
     margin-top: 20px;
     font-size: 0.85em;
-    color: #888;
+    color: var(--detail-text-color); /* Dark modda beyaz olacak */
 }
 
 /* Sonuç Renkleri */
