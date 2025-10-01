@@ -16,33 +16,80 @@ body {
     max-width: 800px;
     width: 100%;
     text-align: center;
+    position: relative; /* Yüklenme katmanı için */
 }
 
-/* Başlık ve Sürüm Stilleri (Öncekiyle Aynı) */
-h1 { color: #007bff; margin-bottom: 5px; font-size: 2.5em; }
-.subtitle { margin-bottom: 25px; color: #666; font-style: italic; }
-.version-info { margin-bottom: 20px; font-size: 0.9em; color: #555; }
-.status { padding: 3px 8px; border-radius: 4px; font-weight: bold; margin-left: 10px; }
-.active { background-color: #d4edda; color: #155724; }
+/* BAŞLIK İYİLEŞTİRMESİ */
+h1 {
+    color: #007bff;
+    margin-bottom: 5px;
+    font-size: 3em; /* Biraz büyütüldü */
+    font-weight: 900;
+    letter-spacing: 2px; /* Harf aralığı eklendi */
+    text-shadow: 2px 2px 4px rgba(0, 123, 255, 0.3); /* Hafif gölge */
+    transition: all 0.3s ease;
+}
 
-/* Yeni: Seçim Alanı Stilleri */
-.selection-area {
+.subtitle {
+    margin-bottom: 25px;
+    color: #666;
+    font-style: italic;
+}
+
+.version-info {
     margin-bottom: 20px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.status {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* YENİ: Seçim Alanı Stilleri */
+.selection-area {
+    margin: 25px 0;
     text-align: left;
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 15px; /* Etiket ve seçici arası boşluk */
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
 }
 .selection-area label {
-    margin-right: 10px;
     font-weight: 600;
+    color: #333;
+    font-size: 1.1em;
 }
 #modelSelector {
-    padding: 8px 12px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #007bff; /* Mavi sınır */
     font-size: 1em;
+    background-color: #f0f7ff; /* Açık mavi arka plan */
+    appearance: none; /* Varsayılan ok stilini kaldır */
+    cursor: pointer;
+    transition: border-color 0.3s, background-color 0.3s;
 }
+#modelSelector:hover {
+    border-color: #0056b3;
+    background-color: #e6f0ff;
+}
+#modelSelector:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
 
 /* Metin Alanı ve Buton Stilleri (Öncekiyle Aynı) */
 #metinGiris {
@@ -54,6 +101,7 @@ h1 { color: #007bff; margin-bottom: 5px; font-size: 2.5em; }
     font-size: 1em;
     resize: vertical;
     box-sizing: border-box;
+    transition: filter 0.5s ease; /* Bulanıklık geçişi için */
 }
 
 #dedekteEtButton {
@@ -73,7 +121,7 @@ h1 { color: #007bff; margin-bottom: 5px; font-size: 2.5em; }
     background-color: #0056b3;
 }
 
-/* Yeni: İlerleme Çubuğu Stilleri */
+/* İlerleme Çubuğu Stilleri (Öncekiyle Aynı) */
 .progress-container {
     width: 100%;
     background-color: #e9ecef;
@@ -87,77 +135,68 @@ h1 { color: #007bff; margin-bottom: 5px; font-size: 2.5em; }
     justify-content: center;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
 }
-
 .progress-bar {
     height: 100%;
     width: 0;
-    background-color: #28a745; /* Yeşil başlangıç */
-    transition: width 0.1s linear; /* JavaScript ile kontrol edilecek */
+    background-color: #28a745;
+    transition: width 0.1s linear;
     position: absolute;
     left: 0;
     top: 0;
 }
-
 #progressText {
     color: #333;
     font-weight: 600;
-    z-index: 10; /* Barın üstünde görünmesi için */
+    z-index: 10;
 }
 
-.hidden {
-    display: none !important;
-}
-
-/* Sonuç Kutusu Stilleri */
-.sonuc-kutusu {
-    margin-top: 30px;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
-    background-color: #f9f9f9;
-}
-
-.sonuc-kutusu h2 {
-    margin-top: 0;
-    color: #007bff;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
-}
-
-#sonucYuzde {
-    font-size: 3em;
-    font-weight: 700;
-    text-align: center;
-    margin: 15px 0;
-    transition: color 0.5s;
-}
-
-/* Yeni: Detaylı Yüzdeler */
-.detail-percentages {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.1em;
-}
-
-.detail-percentages p {
-    margin: 5px 0;
-    font-weight: 500;
-}
-
+/* Sonuç Stilleri (Öncekiyle Aynı) */
+.sonuc-kutusu { margin-top: 30px; padding: 20px; border-radius: 10px; text-align: left; border: 1px solid #ddd; background-color: #f9f9f9; }
+.detail-percentages { text-align: center; margin-bottom: 20px; font-size: 1.1em; }
 .ai-text { color: #dc3545; font-weight: bold; }
 .human-text { color: #28a745; font-weight: bold; }
-
-/* Yeni: Sabit Sebep */
-.sabit-sebep-metin {
-    font-style: italic;
-    padding: 10px;
-    border-left: 3px solid #007bff;
-    background-color: #e6f0ff;
-    color: #333;
-}
-
-/* Sonuç Renkleri */
+.sabit-sebep-metin { font-style: italic; padding: 10px; border-left: 3px solid #007bff; background-color: #e6f0ff; color: #333; }
 .low-ai { color: #28a745 !important; }
 .medium-ai { color: #ffc107 !important; }
 .high-ai { color: #dc3545 !important; }
+.hidden { display: none !important; }
+
+
+/* YENİ: MODEL GEÇİŞ EKRANI */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(5px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    z-index: 20;
+    transition: opacity 0.3s ease;
+}
+
+.loader {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #007bff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.overlay-text {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #007bff;
+}
