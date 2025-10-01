@@ -17,20 +17,41 @@
             <span class="status active">AKTİF</span>
         </div>
 
+        <div class="selection-area">
+            <label for="modelSelector">Analiz Modeli:</label>
+            <select id="modelSelector">
+                <option value="TAOTrans_1_0">TAOTrans 1.0 (Alpha)</option>
+                <option value="TAOTrans_1_1">TAOTrans 1.1 (2. Aktif Sürüm - En İyi)</option>
+                <option value="TAOTrans_1_5" disabled>TAOTrans 1.5 (Geliştirme Aşamasında)</option>
+            </select>
+        </div>
         <textarea id="metinGiris" 
                   placeholder="Analiz etmek istediğiniz metni buraya yapıştırın..." 
                   rows="10"></textarea>
 
         <button id="dedekteEtButton" onclick="analizBaslat()">DEDEKTE ET</button>
 
-        <div id="sonucAlani" class="sonuc-kutusu">
-            <h2>Analiz Sonucu</h2>
-            <div id="sonucYuzde" class="yuzde">--%</div>
-            <p id="sonucAciklama" class="aciklama">Dedektör çalışmaya hazır. Lütfen bir metin girin.</p>
+        <div id="progressBarContainer" class="progress-container hidden">
+            <div id="progressBar" class="progress-bar"></div>
+            <span id="progressText">Analiz ediliyor...</span>
         </div>
+        <div id="sonucAlani" class="sonuc-kutusu hidden">
+            <h2>Analiz Sonucu</h2>
+            
+            <div id="sonucYuzde" class="yuzde">--%</div>
+            
+            <div class="detail-percentages">
+                <p>Yapay Zeka Olasılığı: <span id="aiPercent" class="ai-text">--%</span></p>
+                <p>İnsan Olasılığı: <span id="humanPercent" class="human-text">--%</span></p>
+            </div>
+            <p id="sonucAciklama" class="aciklama">Dedektör çalışmaya hazır. Lütfen bir metin girin.</p>
+            
+            <h3>Gerçek, Tam ve Sabit Sebep</h3>
+            <p id="sabitSebep" class="sabit-sebep-metin">Metin analizinden sonra neden burada görünecektir.</p>
+            </div>
 
         <div class="not">
-            <p>ℹ️ Bu dedektör, GPT ve Gemini modellerinin çıktı özelliklerini taklit eden JavaScript mantık kuralları kullanır.</p>
+            <p>ℹ️ Bu dedektör, seçilen TAOTrans sürümünün mantık kuralları ile çalışır.</p>
         </div>
     </div>
 
