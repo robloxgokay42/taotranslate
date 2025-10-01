@@ -1,32 +1,27 @@
 // =================================================================
-// TAOranslater: Yapay Zeka Dedektörü - TAOTrans 1.1 (EN İYİ SÜRÜM)
+// TAOranslater: Yapay Zeka Dedektörü - TAOTrans 1.1 (EN İYİ SÜRÜM) - GÜNCELLENDİ
 // =================================================================
 
 /** Global Değişkenler **/
-const MAX_ALPHA_SCORE = 35; // TAOTrans 1.0 için maksimum puan (20+15)
-const MAX_BETA_SCORE = 85; // TAOTrans 1.1 için maksimum puan (15+15+25+15+15)
-const MAX_ANALYSIS_TIME_MS = 3000; // Analiz süresi simülasyonu (3 saniye)
-const MODEL_LOAD_TIME_MS = 1500; // Model yüklenme süresi simülasyonu (1.5 saniye)
-
+const MAX_ALPHA_SCORE = 35; 
+const MAX_BETA_SCORE = 85; 
+const MAX_ANALYSIS_TIME_MS = 3000; 
+const MODEL_LOAD_TIME_MS = 1500; 
 
 // ----------------------------------------------------------------
 // UTILITY FONKSİYONLAR VE KURAL TANIMLARI
 // ----------------------------------------------------------------
 
-/** KURAL 1 & 1.1 (Paylaşılan) **/
-function gramerKusursuzluguKontrolu(metin) {
-    // Basit yazım hataları
+function gramerKusursuzluguKontrolu(metin) { 
     const yanlisKelimeler = ['herkez', 'yanlız', 'kirpik', 'orjinal', 'supriz'];
     for (const kelime of yanlisKelimeler) {
         if (metin.toLowerCase().includes(kelime)) return false;
     }
-    // Noktalama hataları
     if (metin.includes(",.") || metin.includes("..") || metin.includes(",,")) return false;
     return true;
 }
 
-/** KURAL 2 & 1.1 (Paylaşılan) **/
-function cumleHomojenligiAnalizi(metin) {
+function cumleHomojenligiAnalizi(metin) { 
     const cumleler = metin.match(/[^.!?]+[.!?]/g) || [];
     if (cumleler.length < 3) return false;
 
@@ -45,23 +40,19 @@ function cumleHomojenligiAnalizi(metin) {
     }
     const standartSapma = Math.sqrt(standartSapmaKaresi / uzunluklar.length);
 
-    // Standart Sapma, ortalamanın %20'sinden azsa aşırı homojen
     return standartSapma < (ortalama * 0.20);
 }
 
-/** KURAL 1.1 - YENİ 1: Kelime Zenginliği Oranı (TTR) (+25 Puan) **/
-function kelimeZenginligiAnalizi(metin) {
+function kelimeZenginligiAnalizi(metin) { 
     const kelimeler = metin.toLowerCase().match(/\b\w+\b/g) || [];
     if (kelimeler.length === 0) return false;
     const benzersizKelimeler = new Set(kelimeler);
     const ttr = benzersizKelimeler.size / kelimeler.length;
     
-    // Doğal olmayan aralık (Çok zengin veya çok tekrarlayıcı)
     return (ttr > 0.75 || ttr < 0.45);
 }
 
-/** KURAL 1.1 - YENİ 2: Duygusallık ve Kişisel Ton Kontrolü (+15 Puan) **/
-function duygusallikKontrolu(metin) {
+function duygusallikKontrolu(metin) { 
     const kisilikKelimeleri = ['bana göre', 'şahsen', 'inanıyorum ki', 'duygusal olarak', 'benim düşüncem'];
     let kisilikSayisi = 0;
     for (const kelime of kisilikKelimeleri) {
@@ -72,12 +63,10 @@ function duygusallikKontrolu(metin) {
     
     const kelimeSayisi = metin.split(/\s+/).length;
     
-    // Zorlama kişisellik (Çok yüksek) veya aşırı resmiyet (Uzun metinde sıfır)
     return kisilikSayisi > 3 || (kelimeSayisi > 50 && kisilikSayisi === 0);
 }
 
-/** KURAL 1.1 - YENİ 3: Klişe ve Geçiş Kelimeleri Kontrolü (+15 Puan) **/
-function kliseKontrolu(metin) {
+function kliseKontrolu(metin) { 
     const kliseler = ['sonuç olarak', 'bununla birlikte', 'derinlemesine bir bakış', 'günümüz dünyasında', 'göz ardı etmemek gerekir', 'ek olarak'];
     let kliseSayisi = 0;
     for (const klise of kliseler) {
@@ -85,15 +74,14 @@ function kliseKontrolu(metin) {
             kliseSayisi++;
         }
     }
-    return kliseSayisi > 2; // 2'den fazla klişe varsa YZ işaretidir
+    return kliseSayisi > 2;
 }
-
 
 // ----------------------------------------------------------------
 // PUANLAYICI MOTORLARI
 // ----------------------------------------------------------------
 
-/** TAOTrans 1.0 Mantığı: Temel Alpha Analizi (2 Kural) **/
+/** TAOTrans 1.0 Mantığı: Temel Alpha Analizi **/
 function taoTrans_1_0_Puanlayici(metin) {
     let yzPuani = 0;
     let sebep = [];
@@ -103,66 +91,83 @@ function taoTrans_1_0_Puanlayici(metin) {
 
     if (gramerKusursuzluguKontrolu(metin)) {
         yzPuani += 20;
-        sebep.push("✅ **Kusursuz Gramer/Yazım:** Metin kusursuz bir dilbilgisi kullanıyor.");
+        sebep.push("✅ Kusursuz Gramer/Yazım: YZ ihtimali yüksek.");
     } else {
-        sebep.push("❌ **Gramer/Yazım Hataları:** Metinde basit hatalar tespit edildi.");
+        sebep.push("❌ Gramer/Yazım Hataları: İnsan ihtimali yüksek.");
     }
     
     if (cumleHomojenligiAnalizi(metin)) {
         yzPuani += 15;
-        sebep.push("✅ **Homojen Cümle Yapısı:** Cümle uzunlukları ve yapıları arasında aşırı benzerlik var.");
+        sebep.push("✅ Homojen Cümle Yapısı: YZ ritmi tespit edildi.");
     } else {
-        sebep.push("❌ **Çeşitli Cümle Yapıları:** Cümle uzunlukları doğal bir çeşitlilik gösteriyor.");
+        sebep.push("❌ Çeşitli Cümle Yapıları: Doğal akış tespit edildi.");
     }
 
     const yzYuzdesi = (yzPuani / MAX_ALPHA_SCORE) * 100;
 
     return {
         yuzde: Math.min(100, Math.round(yzYuzdesi)),
-        sebep: "TAOTrans 1.0 (Alpha) Analiz Sonucu: " + sebep.join(" | "),
+        sebep: "TAOTrans 1.0 (Alpha) Analiz Özeti: " + sebep.join(" | "),
         isAnalizable: true
     };
 }
 
-/** TAOTrans 1.1 Mantığı: Gelişmiş Beta Analizi (5 Kural) **/
+/** TAOTrans 1.1 Mantığı: Gelişmiş Beta Analizi - STABİLİZE EDİLDİ **/
 function taoTrans_1_1_Puanlayici(metin) {
     let yzPuani = 0;
     let sebep = [];
-    if (metin.trim().split(/\s+/).length < 30) { 
+    
+    const kelimeSayisi = metin.trim().split(/\s+/).length;
+    if (kelimeSayisi < 30) { 
         return {yuzde: 0, sebep: "Analiz için çok kısa metin (min 30 kelime).", isAnalizable: false};
     }
 
     // KURAL 1.1.1 (15 Puan)
-    if (gramerKusursuzluguKontrolu(metin)) { yzPuani += 15; sebep.push("✅ **Kusursuz Gramer/Yazım**"); } else { sebep.push("❌ **Gramer/Yazım Hataları**"); }
+    if (gramerKusursuzluguKontrolu(metin)) { yzPuani += 15; sebep.push("✅ Kusursuz Gramer/Yazım"); } else { sebep.push("❌ Gramer/Yazım Hataları"); }
     // KURAL 1.1.2 (15 Puan)
-    if (cumleHomojenligiAnalizi(metin)) { yzPuani += 15; sebep.push("✅ **Homojen Cümle Yapısı**"); } else { sebep.push("❌ **Çeşitli Cümle Yapıları**"); }
+    if (cumleHomojenligiAnalizi(metin)) { yzPuani += 15; sebep.push("✅ Homojen Cümle Yapısı"); } else { sebep.push("❌ Çeşitli Cümle Yapıları"); }
 
     // KURAL 1.1.3: Kelime Zenginliği (25 Puan)
     if (kelimeZenginligiAnalizi(metin)) { 
         yzPuani += 25; 
-        sebep.push("✅ **Anormal Kelime Zenginliği:** TTR doğal olmayan bir aralıkta (YZ zenginleştirmesi)."); 
+        sebep.push("✅ Anormal Kelime Zenginliği: TTR doğal olmayan bir aralıkta."); 
     } else {
-         sebep.push("❌ **Doğal Kelime Çeşitliliği**"); 
+         yzPuani -= 10; 
+         sebep.push("❌ Doğal Kelime Çeşitliliği"); 
     }
 
     // KURAL 1.1.4: Duygusallık/Ton (15 Puan)
     if (duygusallikKontrolu(metin)) { 
         yzPuani += 15; 
-        sebep.push("✅ **Zorlama Ton:** Aşırı resmiyet veya zorlama kişisel zamir/ifadeler."); 
+        sebep.push("✅ Zorlama Ton: Aşırı resmiyet veya zorlama kişisel zamir/ifadeler."); 
     } else {
-        sebep.push("❌ **Doğal Ton Akışı**");
+        sebep.push("❌ Doğal Ton Akışı");
     }
 
     // KURAL 1.1.5: Klişe Kontrolü (15 Puan)
     if (kliseKontrolu(metin)) { 
         yzPuani += 15; 
-        sebep.push("✅ **Klişe Aşırı Kullanımı:** YZ'nin akıcılık için kullandığı geçiş/klişe kelimeler tespit edildi."); 
+        sebep.push("✅ Klişe Aşırı Kullanımı: YZ'nin geçiş kelimeleri tespit edildi."); 
     } else {
-        sebep.push("❌ **Düşük Klişe Kullanımı**");
+        sebep.push("❌ Düşük Klişe Kullanımı");
     }
     
-    const yzYuzdesi = (yzPuani / MAX_BETA_SCORE) * 100;
+    // Puanı [0, 85] aralığında tut
+    yzPuani = Math.min(MAX_BETA_SCORE, Math.max(0, yzPuani)); 
+    
+    const yzYuzdesi = (yzPuani / MAX_BETA_SCORE) * 100; 
 
+    // Yüksek insan olasılığı durumunda yüzdeyi 30'un altına çekmek için ek kontrol
+    if (yzPuani < 30) {
+        // İnsan ihtimali yüksekse skoru daha da aşağı çekerek stabiliteyi artır
+        const sabitYuzde = Math.min(30, Math.round(yzYuzdesi / 2));
+        return {
+            yuzde: sabitYuzde,
+            sebep: "TAOTrans 1.1 (En İyi Sürüm) Analiz Özeti: Yüksek İnsan İhtimali nedeniyle skor dengelendi. " + sebep.join(" | "),
+            isAnalizable: true
+        };
+    }
+    
     return {
         yuzde: Math.min(100, Math.round(yzYuzdesi)),
         sebep: "TAOTrans 1.1 (En İyi Sürüm) Analiz Özeti: " + sebep.join(" | "),
@@ -170,14 +175,13 @@ function taoTrans_1_1_Puanlayici(metin) {
     };
 }
 
-/** TAOTrans 1.5 Mantığı (Kullanıma Kapalı) **/
 function taoTrans_1_5_Puanlayici(metin) {
     return {yuzde: 0, sebep: "Bu sürüm henüz kullanıma kapalıdır (Geliştirme Aşamasında).", isAnalizable: false};
 }
 
 
 // ----------------------------------------------------------------
-// ARABİRİM VE KONTROL FONKSİYONLARI
+// ARABİRİM VE KONTROL FONKSİYONLARI 
 // ----------------------------------------------------------------
 
 /** Tema Değiştirme Fonksiyonu **/
@@ -189,11 +193,11 @@ function toggleTheme() {
     if (body.getAttribute('data-theme') === 'light') {
         body.setAttribute('data-theme', 'dark');
         icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun'); // Güneş ikonu
+        icon.classList.add('fa-sun'); 
     } else {
         body.setAttribute('data-theme', 'light');
         icon.classList.remove('fa-sun');
-        icon.classList.add('fa-moon'); // Ay ikonu
+        icon.classList.add('fa-moon'); 
     }
 }
 
@@ -262,7 +266,6 @@ function analizBaslat() {
             sonucGoster(metin, modelSelectorEl.value);
         }
     }, interval);
-
 }
 
 /** Puanlayıcıdan gelen sonucu ekrana yazdırır **/
@@ -315,10 +318,10 @@ function sonucGoster(metin, seciliModel) {
 
     let aciklama = "";
     if (yzYuzdesi < 30) {
-        aciklama = "Çok Yüksek İnsan Olasılığı. Metin büyük ihtimalle bir insan tarafından yazılmıştır.";
+        aciklama = "Çok Yüksek İnsan Olasılığı. Metin, YZ'nin ince izlerini taşımıyor.";
         sonucYuzdeEl.classList.add('low-ai');
     } else if (yzYuzdesi >= 30 && yzYuzdesi < 65) {
-        aciklama = "Orta Olasılık. Karışık işaretler mevcut, insan ve YZ girdisi olabilir.";
+        aciklama = "Orta Olasılık. İnsan ve YZ girdilerinin karışımı olabilir.";
         sonucYuzdeEl.classList.add('medium-ai');
     } else {
         aciklama = "Yüksek Yapay Zeka Olasılığı. Metin, YZ'nin belirgin ve gizlenmiş tüm işaretlerini taşıyor.";
