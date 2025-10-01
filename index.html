@@ -9,6 +9,10 @@
 <body>
 
     <div class="container">
+        <div id="loadingOverlay" class="overlay hidden">
+            <div class="loader"></div>
+            <p class="overlay-text">Yeni Model Yükleniyor... Ciddi Geçiş Sağlanıyor.</p>
+        </div>
         <h1>TAOranslater</h1>
         <p class="subtitle">Metin Analizi ve Yapay Zeka Teyit Aracı</p>
 
@@ -19,12 +23,12 @@
 
         <div class="selection-area">
             <label for="modelSelector">Analiz Modeli:</label>
-            <select id="modelSelector">
-                <option value="TAOTrans_1_0">TAOTrans 1.0 (Alpha)</option>
+            <select id="modelSelector" onchange="modelGecisiBaslat()"> <option value="TAOTrans_1_0">TAOTrans 1.0 (Alpha)</option>
                 <option value="TAOTrans_1_1">TAOTrans 1.1 (2. Aktif Sürüm - En İyi)</option>
                 <option value="TAOTrans_1_5" disabled>TAOTrans 1.5 (Geliştirme Aşamasında)</option>
             </select>
         </div>
+
         <textarea id="metinGiris" 
                   placeholder="Analiz etmek istediğiniz metni buraya yapıştırın..." 
                   rows="10"></textarea>
@@ -35,20 +39,18 @@
             <div id="progressBar" class="progress-bar"></div>
             <span id="progressText">Analiz ediliyor...</span>
         </div>
+
         <div id="sonucAlani" class="sonuc-kutusu hidden">
             <h2>Analiz Sonucu</h2>
-            
             <div id="sonucYuzde" class="yuzde">--%</div>
-            
             <div class="detail-percentages">
                 <p>Yapay Zeka Olasılığı: <span id="aiPercent" class="ai-text">--%</span></p>
                 <p>İnsan Olasılığı: <span id="humanPercent" class="human-text">--%</span></p>
             </div>
             <p id="sonucAciklama" class="aciklama">Dedektör çalışmaya hazır. Lütfen bir metin girin.</p>
-            
             <h3>Gerçek, Tam ve Sabit Sebep</h3>
             <p id="sabitSebep" class="sabit-sebep-metin">Metin analizinden sonra neden burada görünecektir.</p>
-            </div>
+        </div>
 
         <div class="not">
             <p>ℹ️ Bu dedektör, seçilen TAOTrans sürümünün mantık kuralları ile çalışır.</p>
