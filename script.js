@@ -1,5 +1,5 @@
 // =================================================================
-// TAOranslater: Yapay Zeka Dedektörü - TAOTrans 1.1 (EN İYİ SÜRÜM) - GÜNCELLENDİ
+// TAOranslater: Yapay Zeka Dedektörü - TAOTrans 1.1 (EN İYİ SÜRÜM) - SON GÜNCELLEME
 // =================================================================
 
 /** Global Değişkenler **/
@@ -91,14 +91,14 @@ function taoTrans_1_0_Puanlayici(metin) {
 
     if (gramerKusursuzluguKontrolu(metin)) {
         yzPuani += 20;
-        sebep.push("✅ Kusursuz Gramer/Yazım: YZ ihtimali yüksek.");
+        sebep.push("✅ <b>Kusursuz Gramer/Yazım</b>: YZ ihtimali yüksek."); // <b> Eklendi
     } else {
         sebep.push("❌ Gramer/Yazım Hataları: İnsan ihtimali yüksek.");
     }
     
     if (cumleHomojenligiAnalizi(metin)) {
         yzPuani += 15;
-        sebep.push("✅ Homojen Cümle Yapısı: YZ ritmi tespit edildi.");
+        sebep.push("✅ <b>Homojen Cümle Yapısı</b>: YZ ritmi tespit edildi."); // <b> Eklendi
     } else {
         sebep.push("❌ Çeşitli Cümle Yapıları: Doğal akış tespit edildi.");
     }
@@ -123,14 +123,14 @@ function taoTrans_1_1_Puanlayici(metin) {
     }
 
     // KURAL 1.1.1 (15 Puan)
-    if (gramerKusursuzluguKontrolu(metin)) { yzPuani += 15; sebep.push("✅ Kusursuz Gramer/Yazım"); } else { sebep.push("❌ Gramer/Yazım Hataları"); }
+    if (gramerKusursuzluguKontrolu(metin)) { yzPuani += 15; sebep.push("✅ <b>Kusursuz Gramer/Yazım</b>"); } else { sebep.push("❌ Gramer/Yazım Hataları"); }
     // KURAL 1.1.2 (15 Puan)
-    if (cumleHomojenligiAnalizi(metin)) { yzPuani += 15; sebep.push("✅ Homojen Cümle Yapısı"); } else { sebep.push("❌ Çeşitli Cümle Yapıları"); }
+    if (cumleHomojenligiAnalizi(metin)) { yzPuani += 15; sebep.push("✅ <b>Homojen Cümle Yapısı</b>"); } else { sebep.push("❌ Çeşitli Cümle Yapıları"); }
 
     // KURAL 1.1.3: Kelime Zenginliği (25 Puan)
     if (kelimeZenginligiAnalizi(metin)) { 
         yzPuani += 25; 
-        sebep.push("✅ Anormal Kelime Zenginliği: TTR doğal olmayan bir aralıkta."); 
+        sebep.push("✅ <b>Anormal Kelime Zenginliği</b>: TTR doğal olmayan bir aralıkta."); 
     } else {
          yzPuani -= 10; 
          sebep.push("❌ Doğal Kelime Çeşitliliği"); 
@@ -139,7 +139,7 @@ function taoTrans_1_1_Puanlayici(metin) {
     // KURAL 1.1.4: Duygusallık/Ton (15 Puan)
     if (duygusallikKontrolu(metin)) { 
         yzPuani += 15; 
-        sebep.push("✅ Zorlama Ton: Aşırı resmiyet veya zorlama kişisel zamir/ifadeler."); 
+        sebep.push("✅ <b>Zorlama Ton</b>: Aşırı resmiyet veya zorlama kişisel zamir/ifadeler."); 
     } else {
         sebep.push("❌ Doğal Ton Akışı");
     }
@@ -147,7 +147,7 @@ function taoTrans_1_1_Puanlayici(metin) {
     // KURAL 1.1.5: Klişe Kontrolü (15 Puan)
     if (kliseKontrolu(metin)) { 
         yzPuani += 15; 
-        sebep.push("✅ Klişe Aşırı Kullanımı: YZ'nin geçiş kelimeleri tespit edildi."); 
+        sebep.push("✅ <b>Klişe Aşırı Kullanımı</b>: YZ'nin geçiş kelimeleri tespit edildi."); 
     } else {
         sebep.push("❌ Düşük Klişe Kullanımı");
     }
@@ -159,7 +159,6 @@ function taoTrans_1_1_Puanlayici(metin) {
 
     // Yüksek insan olasılığı durumunda yüzdeyi 30'un altına çekmek için ek kontrol
     if (yzPuani < 30) {
-        // İnsan ihtimali yüksekse skoru daha da aşağı çekerek stabiliteyi artır
         const sabitYuzde = Math.min(30, Math.round(yzYuzdesi / 2));
         return {
             yuzde: sabitYuzde,
@@ -304,7 +303,7 @@ function sonucGoster(metin, seciliModel) {
         sonucAciklamaEl.textContent = sonuc.sebep;
         aiPercentEl.textContent = "--%";
         humanPercentEl.textContent = "--%";
-        sabitSebepEl.textContent = "Analiz için gerekli koşullar sağlanamadı.";
+        sabitSebepEl.innerHTML = "Analiz için gerekli koşullar sağlanamadı."; // innerHTML kullanılır
         sonucYuzdeEl.classList.add('medium-ai');
         return;
     }
@@ -329,5 +328,5 @@ function sonucGoster(metin, seciliModel) {
     }
 
     sonucAciklamaEl.textContent = aciklama;
-    sabitSebepEl.textContent = sonuc.sebep;
+    sabitSebepEl.innerHTML = sonuc.sebep; // **innerHTML** ile HTML etiketlerinin (<b>) çalışması sağlandı.
 }
